@@ -1,0 +1,10 @@
+{
+    "terms": [
+        ["name=None", "name: Optional[str] = None"],
+        ["axis=None", "axis: Optional[int] = None"],
+        ["axis=", "axis: int = "],
+        ["self, y,", "self, y: Tensor,"],
+        ["keepdim=False", "keepdim: bool = False"],
+        ["(self, )", "(self)"]
+    ]
+}

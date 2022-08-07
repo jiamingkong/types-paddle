@@ -1,0 +1,4 @@
+# use the latest version of setuptools
+setuptools>=63.2.0
+mypy
+semver==3.0.0.dev3
