@@ -17,7 +17,10 @@ install:
 
 .PHONY: dist
 dist:
+	pip uninstall -y types-paddle
+	rm -rf dist
 	python3 setup.py sdist bdist_wheel
+	pip install dist/types_paddle-0.0.2-py3-none-any.whl
 
 .PHONY: publish
 publish:

@@ -1,4 +1,2 @@
 include LICENSE README.md VERSION
 recursive-include src **/*.pyi
-recursive-include src/paddle-stubs *.pyi
-recursive-exclude src **/*_test.py **/__pycache__ **/.mypy_cache

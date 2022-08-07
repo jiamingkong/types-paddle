@@ -1,11 +1,13 @@
 """
 setup
 """
+from imaplib import Commands
 import os
 from typing import List
 
 import semver
 import setuptools
+
 
 def versioning(version: str) -> str:
     """
@@ -73,15 +75,21 @@ setuptools.setup(
     long_description_content_type='text/markdown',
     license='Apache-2.0',
     url='https://github.com/wj-Mcat/types-paddle',
-    packages=['paddle-stubs'],
+    packages=['types_paddle'],
     include_package_data=True,
     package_data={
-        "paddle-stubs": ["*.pyi", "**/*.pyi"]
+        "types_paddle": ["**/*.py", "**/*.pyi"]
     },
-    install_requires=get_install_requires(),
+    
+    # install_requires=get_install_requires(),
     classifiers=[
         'Programming Language :: Python :: 3.7',
         'License :: OSI Approved :: Apache Software License',
         'Operating System :: OS Independent',
     ],
+    entry_points={
+        'console_scripts': [
+            'types-paddle = types_paddle.cli:main'
+        ]
+    }
 )

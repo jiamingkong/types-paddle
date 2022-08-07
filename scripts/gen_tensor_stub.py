@@ -53,4 +53,4 @@ def build_tensor_class(output_file: str):
         f.write(content)
 
 if __name__ == "__main__":
-    build_tensor_class("../paddle-stubs/tensor.pyi")
+    build_tensor_class("./tensor.pyi")
