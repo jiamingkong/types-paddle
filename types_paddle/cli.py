@@ -21,6 +21,11 @@ def replace_tensor_file():
     with open(os.path.join(PADDLE_DIR, 'tensor', 'tensor.py'), 'w', encoding='utf-8') as f:
         f.write(target_tensor_content)
 
+def replace_init_file():
+    """
+    replace the __init__.py file at the paddle dir to apply the TYPE_CHECKING trick.
+    """
+    pass
 
 def add_tensor_pyi_file():
     """add tensor.pyi file to the target dir to make it intelligence in IDE
