@@ -37,6 +37,48 @@ def handle_extra_delimiter(return_string):
 METHODS_NEED_SPECIAL_CARE = ["unbind", "update_loss_scaling_", "split", "split_with_num", "rnn", "broadcast_tensors", "unstack"]
 
 
+METHODS_KNOWN = {
+    "topk": "Tuple[Tensor, Tensor]",
+    "T": "Tensor",
+    "astype": "Tensor",
+    "broadcast_to": "Tensor",
+    "broadcast_shape": "Tuple[int]",
+    "clone": "Tensor",
+    "cond": "None",
+    "cov": "None",
+    "cpu": "Tensor",
+    "cuda": "Tensor",
+    "copy_": "None",
+    "diff": "Tensor",
+    "floor_mod": "Tensor",
+    # a scalar is returned for item, but we don't have a type for scalar
+    "item": "Any",
+    "median": "Tensor",
+    "mm": "Tensor",
+    "mod": "Tensor",
+    "moveaxis": "Tensor",
+    "nanmean": "Tensor",
+    "nansum": "Tensor",
+    "ndimension": "int",
+    "neg": "Tensor",
+    "nonzero": "Tensor",
+    "numel": "int",
+    "outer": "Tensor",
+    "numpy": "numpy.ndarray",
+    "prod": "Tensor",
+    "quantile": "Tensor",
+    "rad2deg": "Tensor",
+    "rank": "Tensor",
+    # 文档中写rot90 会返回Tensor或者LoDTensor
+    "rot90": "Tensor",
+    "sort": "Tensor",
+    "stop_gradient": "None",
+    "to_dense": "Tensor",
+    "to_sparse_coo": "Tensor",
+    "values": "Any",
+}
+
+
 class ReturnType:
 
     def __init__(self, function_name, returns = None):
@@ -81,8 +123,10 @@ class ReturnType:
         """
         if self.function_name.endswith("_"):
             return None
-        if self.function_name.startswith("is_"):
+        elif self.function_name.startswith("is_"):
             return "bool"
+        elif self.function_name in METHODS_KNOWN:
+            return METHODS_KNOWN[self.function_name]
         return self.to_return_string()
 
 def calculate_return_type_ops_yaml(yaml_path):

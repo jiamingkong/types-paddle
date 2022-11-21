@@ -6,6 +6,22 @@ import paddle
 from tabulate import tabulate
 from return_type_calculator import ReturnType, calculate_return_type_ops_yaml
 
+declaration = """#   Copyright (c) 2020 PaddlePaddle Authors. All Rights Reserved.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+
+"""
 
 def get_tensor_memebers(return_types = None, guess = False) -> List[str]:
     """get tensor runtime public method
@@ -31,7 +47,7 @@ def get_tensor_memebers(return_types = None, guess = False) -> List[str]:
                 print(f"GUESS: {name} -> {return_string}")
             else:
                 return_string = "Any"
-            result = f"def {name}(self, {str(arg_spec)[1:]} -> {return_string}: ..."
+            result = f"def {name}(self, {str(arg_spec)[1:]} -> {return_string}:\n        pass"
             lines.append(result)
         except TypeError:
             print(f"Skipping {name} for it is not callable")
@@ -55,7 +71,8 @@ def build_tensor_class(output_file: str):
     
     # 2. build the tensor class file
     tab = '    '
-    content = "from typing import Optional, List, Tuple\n\nclass Tensor:\n"
+    content = declaration
+    content += "from typing import Optional, List, Tuple, Union\nfrom __future__ import annotations\n\nclass Tensor:\n"
     for line in lines:
         content += f'{tab}{line}\n'
     
@@ -70,4 +87,4 @@ def build_tensor_class(output_file: str):
         f.write(content)
 
 if __name__ == "__main__":
-    build_tensor_class("./tensor.pyi")
+    build_tensor_class("./tensor_proxy.py")
