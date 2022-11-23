@@ -73,7 +73,13 @@ METHODS_KNOWN = {
     "rot90": "Tensor",
     "sort": "Tensor",
     "stop_gradient": "None",
+    "stanh": "Tensor",
+    "std": "Tensor",
     "to_dense": "Tensor",
+    "scatter_nd": "Tensor",
+    "register_hook": "None",
+    "lcm": "Tensor",
+    
     "to_sparse_coo": "Tensor",
     "values": "Any",
 }

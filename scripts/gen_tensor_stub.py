@@ -5,6 +5,7 @@ from typing import Any, List, Tuple
 import paddle
 from tabulate import tabulate
 from return_type_calculator import ReturnType, calculate_return_type_ops_yaml
+from docstring_retrieval import retrieve_inline_documentation, simple_rewriter
 
 declaration = """#   Copyright (c) 2020 PaddlePaddle Authors. All Rights Reserved.
 #
@@ -39,6 +40,7 @@ def get_tensor_memebers(return_types = None, guess = False) -> List[str]:
         try:
             method = getattr(tensor, name)
             arg_spec = inspect.signature(method)
+
             if return_types is not None and name in return_types:
                 return_string = return_types[name].to_return_string()
                 print(f"CALC:  {name} -> {return_string}")
@@ -47,7 +49,14 @@ def get_tensor_memebers(return_types = None, guess = False) -> List[str]:
                 print(f"GUESS: {name} -> {return_string}")
             else:
                 return_string = "Any"
-            result = f"def {name}(self, {str(arg_spec)[1:]} -> {return_string}:\n        pass"
+            result = f"def {name}(self, {str(arg_spec)[1:]} -> {return_string}:\nPLACEHOLDER_FOR_DOC"
+            # get documentation as well:
+            inline_docstring = simple_rewriter(retrieve_inline_documentation(name))
+            
+            if inline_docstring is not None:
+                result = result.replace("PLACEHOLDER_FOR_DOC", '        """\n        ' + inline_docstring.replace("\n", "\n        ") + '        """\n' + " "*8 + "pass\n\n")
+            else:
+                result = result.replace("PLACEHOLDER_FOR_DOC", " "* 8 + "pass")
             lines.append(result)
         except TypeError:
             print(f"Skipping {name} for it is not callable")
